@@ -32,7 +32,10 @@ export default function Captcha({ onChange }) {
       }
     });
     if (valid) {
-      onChange(true);
+      onChange({
+        value: true,
+        error: false,
+      });
       setChecked(true);
       setClicked(false);
       setImageData(
@@ -44,7 +47,10 @@ export default function Captcha({ onChange }) {
     } else {
       setChecked(false);
       setClicked(false);
-      onChange(false);
+      onChange({
+        value: false,
+        error: true,
+      });
       setImageData(
         images.map((image) => ({
           ...image,
@@ -86,18 +92,23 @@ export default function Captcha({ onChange }) {
       {clicked && (
         <div className="absolute z-50 h-96  sm:h-[430px] -left-[5%] w-[350px] top-full mb-5 sm:w-96 shadow p-4 bg-slate-50 dark:bg-slate-800">
           <div className="flex justify-end items-center w-10 float-right">
-            <button onClick={handleClose} className="cursor-pointers dark:text-white font-bold">
+            <button
+              onClick={handleClose}
+              className="cursor-pointers dark:text-white font-bold"
+            >
               X
             </button>
           </div>
-          <div className="dark:text-white" >Select images with boat on it.</div>
+          <div className="dark:text-white">Select images with boat on it.</div>
           <div className=" mt-4 w-full flex flex-wrap justify-around items-center gap-2">
             {imageData.map((image, index) => (
               <img
                 key={index + "captcha-image"}
                 onClick={() => handleSelect(index)}
                 className={`w-[90px]  sm:w-[110px] h-20 sm:h-24 border-4 transition-all ease-in-out ${
-                  image?.selected ? "border-red-500" : "border-white dark:border-slate-800"
+                  image?.selected
+                    ? "border-red-500"
+                    : "border-white dark:border-slate-800"
                 }`}
                 src={image.src}
                 alt={image.value}
